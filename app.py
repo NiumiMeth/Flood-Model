@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 def load_dataset_options():
     """Load unique values from dataset for dropdowns and defaults"""
-    data_path = os.path.join("Ipynb files", "data.csv")
+    data_path = os.path.join("data", "data.csv")
     df = pd.read_csv(data_path)
     
     return {
@@ -44,11 +44,11 @@ def load_dataset_options():
 def build_and_train_model():
     """
     Rebuilds and trains the same pipeline you created in the notebook,
-    using the dataset in the Ipynb files folder.
+    using the dataset in the data folder.
     This runs once when the Flask app starts.
     """
     # Adjust path so the app can find your CSV from the project root
-    data_path = os.path.join("Ipynb files", "data.csv")
+    data_path = os.path.join("data", "data.csv")
 
     df = pd.read_csv(data_path)
 
@@ -199,5 +199,8 @@ def index():
 
 
 if __name__ == "__main__":
-    # Run the app in debug mode for development
-    app.run(debug=True)
+    # Get port from environment variable or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    # Only run in debug mode if explicitly set in environment
+    debug = os.environ.get("FLASK_DEBUG", "False").lower() == "true"
+    app.run(host="0.0.0.0", port=port, debug=debug)
