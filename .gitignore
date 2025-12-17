@@ -29,8 +29,9 @@ __pycache__/
 venv/
 .env/
 
-# Ignore data files
+# Ignore data files (but keep data/data.csv for deployment)
 *.csv
+!data/data.csv
 *.xlsx
 *.json
 
