@@ -38,6 +38,22 @@ This project is a simple Flask web application that serves a machine learning mo
 
 4. Open your browser and navigate to `http://127.0.0.1:5000/` to use the app.
 
+## Deployment
+
+This app is ready for deployment to various platforms. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+
+**Quick Deploy Options:**
+- **Railway** (Recommended) - Easy setup, free tier available
+- **Render** - Free tier with auto-sleep
+- **Fly.io** - Free tier available
+- **PythonAnywhere** - Free tier available
+
+The app includes:
+- ✅ `Procfile` for production server (gunicorn)
+- ✅ `runtime.txt` for Python version
+- ✅ Production-ready configuration
+- ✅ All dependencies in `requirements.txt`
+
 ## Git Usage
 
 Once this structure is in place, you can initialize a Git repository and make your first commit:
@@ -47,5 +63,22 @@ git init
 git add .
 git commit -m "Initial commit: flood model web app"
 ```
+
+## Features
+
+- 🎨 **Modern, Professional UI** - Beautiful glassmorphism design with smooth animations
+- 🤖 **Real ML Model** - Trained logistic regression model using scikit-learn
+- 📊 **Interactive Form** - Easy-to-use form with dropdowns and tooltips
+- 📈 **Risk Probability** - Visual probability gauge with detailed results
+- 📱 **Responsive Design** - Works on desktop, tablet, and mobile devices
+- ⚡ **Fast Predictions** - Real-time flood risk assessment
+
+## Technology Stack
+
+- **Backend**: Flask (Python)
+- **ML Framework**: scikit-learn
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Icons**: Font Awesome
+- **Production Server**: Gunicorn
 
 
