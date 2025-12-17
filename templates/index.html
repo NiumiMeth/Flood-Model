@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flood Risk Prediction Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <div class="logo-line"></div>
+                </div>
+                <h3 class="sidebar-title">Main Menu</h3>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>Predictions</span>
+                    <span class="badge-nav">67</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                    <span class="badge-nav orange">12</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>History</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="profile-avatar"></div>
+                    <div class="profile-info">
+                        <div class="profile-name">Flood Model</div>
+                        <div class="profile-email">flood@prediction.com</div>
+                    </div>
+                </div>
+                <div class="task-progress">
+                    <i class="fas fa-star"></i>
+                    <div class="progress-info">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <span class="progress-text">0/45</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Flood Risk Prediction</h1>
+                </div>
+                <div class="header-center">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search here...">
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-icons">
+                        <div class="icon-badge">
+                            <i class="fas fa-star"></i>
+                            <span class="badge pink">38</span>
+                        </div>
+                        <div class="icon-badge">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge orange">12</span>
+                        </div>
+                        <div class="icon-badge">
+                            <i class="fas fa-envelope"></i>
+                            <span class="badge red">1</span>
+                        </div>
+                        <div class="icon-badge">
+                            <i class="fas fa-check"></i>
+                            <span class="badge green">67</span>
+                        </div>
+                        <i class="fas fa-cog"></i>
+                        <div class="profile-avatar-small"></div>
+                        <select class="lang-select">
+                            <option>EN</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Hero Card -->
+            <div class="hero-card">
+                <div class="hero-content">
+                    <h2>Manage your flood risk in one touch</h2>
+                    <p>Let our AI-powered flood prediction model assess your location's flood risk automatically with advanced machine learning systems</p>
+                    <button class="btn-hero">Try Free Now</button>
+                </div>
+                <div class="hero-illustration">
+                    <div class="chart-box">
+                        <div class="chart-line"></div>
+                        <div class="chart-bars"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="content-grid">
+                <div class="form-card">
+                    <h2 class="card-title">Input Location & Environmental Data</h2>
+                    
+                    {% if error_message %}
+                    <div class="alert alert-error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        {{ error_message }}
+                    </div>
+                    {% endif %}
+
+                    <form method="POST" class="prediction-form" id="predictionForm">
+                        <!-- Step 1: Location Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h3>Location Information</h3>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="latitude">
+                                        Latitude
+                                        <span class="tooltip" data-tooltip="Geographic latitude coordinate (e.g., 6.92)">ℹ️</span>
+                                    </label>
+                                    <input type="number" step="any" name="latitude" id="latitude" 
+                                        value="{{ form_values.get('latitude', '') }}" 
+                                        placeholder="e.g., 6.92" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="longitude">
+                                        Longitude
+                                        <span class="tooltip" data-tooltip="Geographic longitude coordinate (e.g., 79.91)">ℹ️</span>
+                                    </label>
+                                    <input type="number" step="any" name="longitude" id="longitude" 
+                                        value="{{ form_values.get('longitude', '') }}" 
+                                        placeholder="e.g., 79.91" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city_name">
+                                        City Name
+                                        <span class="tooltip" data-tooltip="Select the city from the dropdown">ℹ️</span>
+                                    </label>
+                                    <select name="city_name" id="city_name" required>
+                                        <option value="">-- Select City --</option>
+                                        {% for city in dataset_options.cities %}
+                                        <option value="{{ city }}" {% if form_values.get('city_name') == city %}selected{% endif %}>{{ city }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="admin_ward">
+                                        Admin Ward
+                                        <span class="tooltip" data-tooltip="Administrative ward or district">ℹ️</span>
+                                    </label>
+                                    <select name="admin_ward" id="admin_ward">
+                                        <option value="">-- Select Ward --</option>
+                                        {% for ward in dataset_options.admin_wards %}
+                                        <option value="{{ ward }}" {% if form_values.get('admin_ward') == ward %}selected{% endif %}>{{ ward }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Flood Risk Settings -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-water"></i>
+                                <h3>Flood Risk Settings</h3>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="elevation_m">
+                                        Elevation (meters)
+                                        <span class="tooltip" data-tooltip="Elevation above sea level (typically 0-300m)">ℹ️</span>
+                                    </label>
+                                    <input type="number" step="any" name="elevation_m" id="elevation_m" 
+                                        value="{{ form_values.get('elevation_m', defaults.elevation_m) }}" 
+                                        placeholder="Default: {{ defaults.elevation_m }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="storm_drain_proximity_m">
+                                        Storm Drain Proximity (meters)
+                                        <span class="tooltip" data-tooltip="Distance to nearest storm drain (typically 0-750m)">ℹ️</span>
+                                    </label>
+                                    <input type="number" step="any" name="storm_drain_proximity_m" id="storm_drain_proximity_m" 
+                                        value="{{ form_values.get('storm_drain_proximity_m', defaults.storm_drain_proximity_m) }}" 
+                                        placeholder="Default: {{ defaults.storm_drain_proximity_m }}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="historical_rainfall_intensity_mm_hr">
+                                        Historical Rainfall Intensity (mm/hr)
+                                        <span class="tooltip" data-tooltip="Historical maximum rainfall intensity (typically 5-150 mm/hr)">ℹ️</span>
+                                    </label>
+                                    <input type="number" step="any" name="historical_rainfall_intensity_mm_hr" id="historical_rainfall_intensity_mm_hr" 
+                                        value="{{ form_values.get('historical_rainfall_intensity_mm_hr', defaults.historical_rainfall_intensity_mm_hr) }}" 
+                                        placeholder="Default: {{ defaults.historical_rainfall_intensity_mm_hr }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="land_use">
+                                        Land Use
+                                        <span class="tooltip" data-tooltip="Type of land use in the area">ℹ️</span>
+                                    </label>
+                                    <select name="land_use" id="land_use" required>
+                                        <option value="">-- Select Land Use --</option>
+                                        {% for land in dataset_options.land_use %}
+                                        <option value="{{ land }}" {% if form_values.get('land_use') == land %}selected{% endif %}>{{ land }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="storm_drain_type">
+                                        Storm Drain Type
+                                        <span class="tooltip" data-tooltip="Type of nearby storm drain (e.g., CurbInlet, OpenChannel)">ℹ️</span>
+                                    </label>
+                                    <select name="storm_drain_type" id="storm_drain_type" required>
+                                        <option value="">-- Select Type --</option>
+                                        {% for drain_type in dataset_options.storm_drain_types %}
+                                        <option value="{{ drain_type }}" {% if form_values.get('storm_drain_type') == drain_type %}selected{% endif %}>{{ drain_type }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="return_period_years">
+                                        Return Period (years)
+                                        <span class="tooltip" data-tooltip="Storm return period (2, 5, 10, 25, 50, or 100 years)">ℹ️</span>
+                                    </label>
+                                    <select name="return_period_years" id="return_period_years">
+                                        {% for period in dataset_options.return_periods %}
+                                        <option value="{{ period }}" {% if form_values.get('return_period_years') == period|string or (not form_values.get('return_period_years') and period == defaults.return_period_years) %}selected{% endif %}>{{ period }} years</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Options (Collapsible) -->
+                        <div class="form-section collapsible">
+                            <div class="section-header collapsible-header" onclick="toggleSection(this)">
+                                <i class="fas fa-cog"></i>
+                                <h3>Advanced Options</h3>
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </div>
+                            <div class="collapsible-content">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="drainage_density_km_per_km2">
+                                            Drainage Density (km/km²)
+                                            <span class="tooltip" data-tooltip="Drainage network density (typically 1-12 km/km²)">ℹ️</span>
+                                        </label>
+                                        <input type="number" step="any" name="drainage_density_km_per_km2" id="drainage_density_km_per_km2" 
+                                            value="{{ form_values.get('drainage_density_km_per_km2', defaults.drainage_density_km_per_km2) }}" 
+                                            placeholder="Default: {{ defaults.drainage_density_km_per_km2 }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="catchment_id">
+                                            Catchment ID
+                                            <span class="tooltip" data-tooltip="Watershed catchment identifier (auto-filled if available)">ℹ️</span>
+                                        </label>
+                                        <select name="catchment_id" id="catchment_id">
+                                            <option value="">-- Auto-select --</option>
+                                            {% for catch_id in dataset_options.catchment_ids %}
+                                            <option value="{{ catch_id }}" {% if form_values.get('catchment_id') == catch_id %}selected{% endif %}>{{ catch_id }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="soil_group">
+                                            Soil Group
+                                            <span class="tooltip" data-tooltip="Soil classification group (A, B, C, or D)">ℹ️</span>
+                                        </label>
+                                        <select name="soil_group" id="soil_group">
+                                            <option value="">-- Select Soil Group --</option>
+                                            {% for soil in dataset_options.soil_groups %}
+                                            <option value="{{ soil }}" {% if form_values.get('soil_group') == soil or (not form_values.get('soil_group') and soil == defaults.soil_group) %}selected{% endif %}>{{ soil }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dem_source">
+                                            DEM Source
+                                            <span class="tooltip" data-tooltip="Digital Elevation Model data source">ℹ️</span>
+                                        </label>
+                                        <select name="dem_source" id="dem_source">
+                                            {% for dem in dataset_options.dem_sources %}
+                                            <option value="{{ dem }}" {% if form_values.get('dem_source') == dem or (not form_values.get('dem_source') and dem == defaults.dem_source) %}selected{% endif %}>{{ dem }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="rainfall_source">
+                                            Rainfall Source
+                                            <span class="tooltip" data-tooltip="Data source for rainfall measurements">ℹ️</span>
+                                        </label>
+                                        <select name="rainfall_source" id="rainfall_source">
+                                            {% for source in dataset_options.rainfall_sources %}
+                                            <option value="{{ source }}" {% if form_values.get('rainfall_source') == source or (not form_values.get('rainfall_source') and source == defaults.rainfall_source) %}selected{% endif %}>{{ source }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-predict">
+                                <i class="fas fa-bolt"></i>
+                                Predict Flood Risk
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Results Card -->
+                {% if prediction %}
+                <div class="result-card">
+                    <h2 class="card-title">Prediction Result</h2>
+                    <div class="result-content">
+                        <div class="result-main">
+                            <div class="result-label">Predicted Risk Level:</div>
+                            <div class="result-badge {% if 'Risky' in prediction %}badge-risky{% else %}badge-monitor{% endif %}">
+                                {{ prediction }}
+                            </div>
+                        </div>
+                        
+                        {% if probability is not none %}
+                        <div class="probability-section">
+                            <div class="probability-label">Risk Probability</div>
+                            <div class="probability-gauge">
+                                <div class="gauge-fill" style="width: {{ probability }}%"></div>
+                            </div>
+                            <div class="probability-value">{{ probability }}%</div>
+                            <p class="probability-desc">Probability of being classified as <strong>Risky</strong></p>
+                        </div>
+                        {% endif %}
+
+                        <div class="result-footer">
+                            <i class="fas fa-info-circle"></i>
+                            <p>This prediction is based on a trained logistic regression model and historical data. Use as a decision-support tool, not as a sole basis for critical safety decisions.</p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="result-card placeholder">
+                    <div class="placeholder-content">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Ready to Predict</h3>
+                        <p>Fill in the form and click "Predict Flood Risk" to see the results here.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const section = header.closest('.collapsible');
+            const content = section.querySelector('.collapsible-content');
+            const icon = header.querySelector('.toggle-icon');
+            
+            section.classList.toggle('expanded');
+            icon.classList.toggle('fa-chevron-down');
+            icon.classList.toggle('fa-chevron-up');
+        }
+
+        // Tooltip functionality
+        document.querySelectorAll('.tooltip').forEach(tooltip => {
+            tooltip.addEventListener('mouseenter', function(e) {
+                const text = this.getAttribute('data-tooltip');
+                const tooltipBox = document.createElement('div');
+                tooltipBox.className = 'tooltip-box';
+                tooltipBox.textContent = text;
+                document.body.appendChild(tooltipBox);
+                
+                const rect = this.getBoundingClientRect();
+                tooltipBox.style.left = rect.left + 'px';
+                tooltipBox.style.top = (rect.top - tooltipBox.offsetHeight - 8) + 'px';
+            });
+            
+            tooltip.addEventListener('mouseleave', function() {
+                document.querySelectorAll('.tooltip-box').forEach(box => box.remove());
+            });
+        });
+    </script>
+</body>
+
+</html>
