@@ -6,9 +6,9 @@ A machine learning-powered web application that predicts flood risk based on geo
 
 <div align="center">
   <img src="Images/flood 1.png" alt="Flood Prediction Interface 1" width="45%" style="margin: 10px;">
-  <img src="Images/flood 2.png" alt="Flood Prediction Interface 2" width="45%" style="margin: 10px;">
+  <img src="Images/flood 3.png" alt="Flood Prediction Interface 2" width="45%" style="margin: 10px;">
   <br>
-  <img src="Images/flood 3.png" alt="Flood Prediction Interface 3" width="45%" style="margin: 10px;">
+  <img src="Images/flood 2.png" alt="Flood Prediction Interface 3" width="45%" style="margin: 10px;">
   <img src="Images/flood 4.png" alt="Flood Prediction Interface 4" width="45%" style="margin: 10px;">
 </div>
 
