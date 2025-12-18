@@ -2,6 +2,16 @@
 
 A machine learning-powered web application that predicts flood risk based on geographical, environmental, and meteorological features. The application uses a trained logistic regression model to classify locations as either "Monitor" (low risk) or "Risky" (high flood risk).
 
+## 🖼️ Interface Screenshots
+
+<div align="center">
+  <img src="Images/flood 1.png" alt="Flood Prediction Interface 1" width="45%" style="margin: 10px;">
+  <img src="Images/flood 2.png" alt="Flood Prediction Interface 2" width="45%" style="margin: 10px;">
+  <br>
+  <img src="Images/flood 3.png" alt="Flood Prediction Interface 3" width="45%" style="margin: 10px;">
+  <img src="Images/flood 4.png" alt="Flood Prediction Interface 4" width="45%" style="margin: 10px;">
+</div>
+
 ## 📊 Data Analysis & Model Development
 
 ### Exploratory Data Analysis (`flood_EDA.ipynb`)
@@ -149,6 +159,11 @@ Flood Model/
 │   └── Model.ipynb               # Model development & training
 ├── data/
 │   └── data.csv                  # Training dataset
+├── Images/
+│   ├── flood 1.png              # Interface screenshots
+│   ├── flood 2.png
+│   ├── flood 3.png
+│   └── flood 4.png
 ├── templates/
 │   └── index.html                # Web interface
 ├── static/
