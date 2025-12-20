@@ -1,4 +1,8 @@
-# Flood Risk Prediction Web App
+# Flood Risk Prediction Model
+
+[![Deployed App](https://img.shields.io/badge/Live%20Demo-Heroku-blue)](https://flood-prediction-app-faf1173f6158.herokuapp.com/)
+
+A deployed version of this app is available at the link above.
 
 A machine learning-powered web application that predicts flood risk based on geographical, environmental, and meteorological features. The application uses a trained logistic regression model to classify locations as either "Monitor" (low risk) or "Risky" (high flood risk).
 
